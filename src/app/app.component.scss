@@ -18,13 +18,19 @@
     .columns {
       flex-basis: 14%;
     }
+    @media only screen and (max-width: 1024px) {
+      .columns {
+        display: none;
+      }
+      .selection {
+        flex-basis: unset;
+      }
+      .new {
+        order: 2;
+      }
+      .actions {
+        flex-direction: column;
+      }
+    }
 }
-.success {
-  background-color: #4caf50; /* Green color for success */
-  color: #ffffff; /* White text color */
-}
-.warn {
-  background-color: red; /* Green color for success */
-  color: #ffffff; /* White text color */
-  
-}
+

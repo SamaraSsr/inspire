@@ -5,3 +5,9 @@
     column-gap: 1%;
     margin-top: 1em;
 }
+
+@media only screen and (max-width: 1024px) {
+    .fields {
+        flex-direction: column;
+    }
+}

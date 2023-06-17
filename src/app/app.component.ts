@@ -118,8 +118,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openSnackBar = (message: string, style: string) => {
     this._snackBar.open(message, undefined, {
-      duration: 3000,
-      panelClass: style
+      duration: 5000,
+      panelClass: [style]
     });
   }
 }
