@@ -1,1 +1,29 @@
-<app-books (sortBooks)="sortBooks($event)" (purchase)="purchaseBook($event)" [books]="books" [sortTypes]="sortTypes" [sortBy]="sortBy" [bookResponse]="bookResponseData"></app-books>
+<section class="books">
+    <div class="actions">
+        <div class="new">
+            <button mat-button color="primary" (click)="add()">Add book</button>
+        </div>
+        <div class="selection">
+            <h2>NEW ARRIVALS</h2>
+            <mat-chip-listbox aria-label="sort selection">
+                <mat-chip-option selected="true" (click)="sortBooks('All')">All</mat-chip-option>
+                <ng-container *ngFor="let type of sortTypes">
+                    <mat-chip-option color="accent" (click)="sortBooks(type)">{{type}}</mat-chip-option>
+                </ng-container>
+            </mat-chip-listbox>
+        </div>
+        <div class="columns">
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Enter layout columns</mat-label>
+                <input matInput type="text" [(ngModel)]="column">
+                <mat-hint>Enter a number from 1-5</mat-hint>
+                <button *ngIf="column" matSuffix mat-icon-button aria-label="Clear" (click)="column=null">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="view">
+        <app-books (purchase)="purchaseBook($event)" (remove)="removeBook($event)" [books]="books" [bookResponse]="bookResponseData" [column]="column"></app-books>
+    </div>
+</section>

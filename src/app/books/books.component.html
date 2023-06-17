@@ -1,24 +1,13 @@
 <section class="books">
-    <div class="selection">
-        <h2>NEW ARRIVALS</h2>
-        <mat-chip-listbox aria-label="sort selection">
-            <mat-chip-option selected="true" (click)="sortBooks.emit('All')">All</mat-chip-option>
-            <ng-container *ngFor="let type of sortTypes">
-                <mat-chip-option color="accent" (click)="sortBooks.emit(type)">{{type}}</mat-chip-option>
-            </ng-container>
-        </mat-chip-listbox>
-    </div>
-
-
-    <div id="book-list" [ngClass]="{'two-columns': isDesktopView}">
-        <mat-card *ngFor="let book of books" class="book-entry">
+    <div id="book-list">
+        <mat-card *ngFor="let book of books" class="book-entry" [style.flex-basis]="'calc(98% /'+ column +')'">
             <mat-card-header>
                 <mat-card-title style="font-size: 16px; color: #9C27B0;">{{ book.title }}</mat-card-title>
                 <mat-card-subtitle>Published: {{ book.PublishDate }}</mat-card-subtitle>
             </mat-card-header>
             <img mat-card-image src="{{ book.imageUrl }}" alt="{{ book.title }} Image">
             <mat-card-content>
-                <div style="text-transform: uppercase; color: red;">
+                <div style="text-transform: uppercase; color: red;" *ngIf="bookResponse">
                     {{bookResponse.author }}
                 </div>
                 <div>
@@ -28,8 +17,14 @@
                     {{bookResponse.birthday }}
                 </div>
             </mat-card-content>
-            <mat-card-actions style="justify-content: flex-end;">
-                <button mat-button color="accent"(click)="purchase.emit(book)">Buy</button>
+            <mat-card-actions>
+                <div style="justify-content: flex-end;">
+                    <button mat-button color="accent" (click)="purchase.emit(book)">Buy</button>
+                    <button mat-button color="primary" (click)="purchase.emit(book)">More Info</button>
+                </div>
+                <div style="justify-content: flex-end;">
+                    <button mat-button color="warn" (click)="remove.emit(book)"><mat-icon>delete</mat-icon></button>
+                </div>
             </mat-card-actions>
         </mat-card>
     </div>

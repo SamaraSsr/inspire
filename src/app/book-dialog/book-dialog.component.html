@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Book Details</h2>
+<div mat-dialog-content>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*">
+    <div class="fields">
+        <!-- <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="author" placeholder="Author" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="birthday" placeholder="Birthday" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="birthPlace" placeholder="Birth place" required>
+        </mat-form-field> -->
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="publishDate" placeholder="Publish Date" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="purchaseLink" placeholder="Purchase Link" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="title" placeholder="Title" required>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [disabled]="!validateForm()" (click)="addBook()">Add Book</button>
+</div>

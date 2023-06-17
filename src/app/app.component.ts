@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BooksService } from './books.service';
 import { Book, BookData } from './book.interface';
-import { filter, map, pipe, share } from 'rxjs';
+import { filter } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { BookDialogComponent } from './book-dialog/book-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,7 +13,7 @@ import { filter, map, pipe, share } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   sortTypes!: string[];
 
-  constructor(private bookService: BooksService) { }
+  constructor(private bookService: BooksService, private dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   /**
    * The books that are currently being displayed.
@@ -27,10 +30,13 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   bookResponseData!: BookData;
 
+  column!: number | null;
+
   /**
    * Initializes the component by getting the books from the service.
    */
   ngOnInit(): void {
+    this.books = [];
     this.sortTypes = ['Title', 'Date'];
     // Get the books from the service.
     this.bookService.getBooks();
@@ -39,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.bookService.books$
       .pipe(
         // Filter the books to only those that have a length greater than 0.
-        filter(books => books !== undefined)
+        filter(books => books?.length > 0)
       )
       .subscribe((books: Book[]) => {
         // Set the books and bookResponseData properties.
@@ -67,6 +73,54 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public purchaseBook = (book: Book) => {
     window.open(book.purchaseLink, '_blank');
+  }
+
+  public add = () => {
+    const dialogRef = this.dialog.open(BookDialogComponent, {
+      data: {
+        imageFile: '',
+        title: '',
+        purchaseLink: '',
+        publishDate: '',
+        // author: '',
+        // birthday: '',
+        // birthPlace: ''
+      }
+    });
+
+    dialogRef.componentInstance.onAdd.subscribe((result) => {
+      const {
+        imageUrl,
+        title,
+        purchaseLink,
+        publishDate,
+        // author,
+        // birthday,
+        // birthPlace
+      } = result;
+
+      const book = {
+        imageUrl,
+        title,
+        purchaseLink,
+        PublishDate: publishDate,
+      }
+      this.books.push(book);
+      this.openSnackBar(`${book.title} has been added to your collection.`, 'success')
+      dialogRef.close();
+    });
+  }
+
+  removeBook = (book: Book) => {
+    this.books = this.books.filter(b => b.title !== book.title);
+    this.openSnackBar(`${book.title} has been removed from your collection.`, 'warn')
+  }
+
+  openSnackBar = (message: string, style: string) => {
+    this._snackBar.open(message, undefined, {
+      duration: 3000,
+      panelClass: style
+    });
   }
 }
 
