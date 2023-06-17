@@ -1,0 +1,47 @@
+.books {
+  .selection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    h2 {
+      border-bottom: 2px solid #c373cde8;
+    }
+  }
+  #book-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .book-entry {
+      flex-basis: 17%;
+      &:hover {
+        color: #9C27B0;
+    }
+      .mat-mdc-card-content {
+        margin: 1em;
+    }
+    }
+    
+    .book-entry img {
+      width: 357px;
+      height: 520px;
+      margin: 0 auto;
+    }
+    
+    @media only screen and (max-width: 767px) {
+      #book-list.two-columns .book-entry { 
+        justify-content: flex-start;
+      }
+    
+      .book-entry img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+    
+}
