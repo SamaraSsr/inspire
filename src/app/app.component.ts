@@ -112,7 +112,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   removeBook = (book: Book) => {
-    this.books = this.books.filter(b => b.title !== book.title);
+    const index = this.books.findIndex(b => b.title === book.title);
+    index && this.books.splice(index, 1);
     this.openSnackBar(`${book.title} has been removed from your collection.`, 'warn')
   }
 
