@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Book, BookData } from '../book.interface';
 
-
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
@@ -14,11 +13,6 @@ export class BooksComponent {
   @Input() column!: number | null;
   @Output() purchase = new EventEmitter();
   @Output() remove = new EventEmitter();
+  @Output() edit = new EventEmitter();
 
-  isDesktopView: boolean = true;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

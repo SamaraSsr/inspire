@@ -15,6 +15,7 @@ export class BookDialogComponent {
   birthday: string;
   birthPlace: string;
   onAdd = new EventEmitter();
+  isEdit: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<BookDialogComponent>,
@@ -27,6 +28,7 @@ export class BookDialogComponent {
     this.author = data.author || '';
     this.birthday = data.birthday || '';
     this.birthPlace = data.birthPlace || '';
+    this.isEdit = data.edit || false;
   }
   addBook = (): void => {
     if (this.validateForm()) {
@@ -35,16 +37,13 @@ export class BookDialogComponent {
         title: this.title,
         purchaseLink: this.purchaseLink,
         publishDate: this.publishDate,
-        // author: this.author,
-        // birthday: this.birthday,
-        // birthPlace: this.birthPlace
       };
       this.onAdd.emit(bookDetails);
     }
   }
 
   validateForm(): boolean {
-    if (!this.imageFile || /* !this.author || !this.birthday || !this.birthPlace || */ !this.title || !this.purchaseLink || !this.publishDate) {
+    if (!this.imageFile || !this.title || !this.purchaseLink || !this.publishDate) {
       return false;
     }
     return true;

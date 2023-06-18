@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BooksService } from './books.service';
 import { Book, BookData } from './book.interface';
 import { filter } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BookDialogComponent } from './book-dialog/book-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
@@ -82,39 +82,21 @@ export class AppComponent implements OnInit, OnDestroy {
         title: '',
         purchaseLink: '',
         publishDate: '',
-        // author: '',
-        // birthday: '',
-        // birthPlace: ''
+        edit: false
       }
     });
 
-    dialogRef.componentInstance.onAdd.subscribe((result) => {
-      const {
-        imageUrl,
-        title,
-        purchaseLink,
-        publishDate,
-        // author,
-        // birthday,
-        // birthPlace
-      } = result;
-
-      const book = {
-        imageUrl,
-        title,
-        purchaseLink,
-        PublishDate: publishDate,
-      }
-      this.books.push(book);
-      this.openSnackBar(`${book.title} has been added to your collection.`, 'success')
-      dialogRef.close();
+    dialogRef.componentInstance.onAdd.subscribe((newBook) => {
+      this.bookHandler(newBook, undefined, dialogRef, false);
     });
   }
 
   removeBook = (book: Book) => {
     const index = this.books.findIndex(b => b.title === book.title);
-    index && this.books.splice(index, 1);
-    this.openSnackBar(`${book.title} has been removed from your collection.`, 'warn')
+    if (index >= 0) {
+      this.books.splice(index, 1);
+      this.openSnackBar(`${book.title} has been removed from your collection.`, 'warn')
+    }
   }
 
   openSnackBar = (message: string, style: string) => {
@@ -122,6 +104,46 @@ export class AppComponent implements OnInit, OnDestroy {
       duration: 5000,
       panelClass: [style]
     });
+  }
+
+  editBook = (oldBbook: Book) => {
+    const {
+      imageUrl,
+      title,
+      purchaseLink,
+      PublishDate,
+    } = oldBbook;
+    const dialogRef = this.dialog.open(BookDialogComponent, {
+      data: {
+        imageFile: imageUrl,
+        title,
+        purchaseLink,
+        publishDate: PublishDate,
+        edit: true
+      }
+    });
+    dialogRef.componentInstance.onAdd.subscribe((newBook) => {
+      this.bookHandler(newBook, oldBbook, dialogRef, true);
+    });
+  }
+
+  private bookHandler(newBook: any, oldBbook: any, dialogRef: MatDialogRef<BookDialogComponent, any>, edit: boolean) {
+    const { imageUrl, title, purchaseLink, publishDate } = newBook;
+    const book = {
+      imageUrl,
+      title,
+      purchaseLink,
+      PublishDate: publishDate,
+    };
+    if (edit) {
+      const index = this.books.findIndex(b => b.title === oldBbook.title);
+      this.books[index] = book;
+    }
+    else {
+      this.books.push(book);
+    }
+    this.openSnackBar(`${edit ? oldBbook.title : newBook.title} has been ${edit ? 'updated' : 'added'} to your collection.`, 'success');
+    dialogRef.close();
   }
 }
 

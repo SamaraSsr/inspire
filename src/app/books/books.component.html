@@ -19,11 +19,11 @@
             </mat-card-content>
             <mat-card-actions>
                 <div>
+                    <button mat-button color="primary" (click)="edit.emit(book)"><mat-icon>edit</mat-icon></button>
                     <button mat-button color="warn" (click)="remove.emit(book)"><mat-icon>delete</mat-icon></button>
                 </div>
                 <div>
                     <button mat-button color="accent" (click)="purchase.emit(book)">Buy</button>
-                    <button mat-button color="primary" (click)="purchase.emit(book)">More Info</button>
                 </div>
             </mat-card-actions>
         </mat-card>
